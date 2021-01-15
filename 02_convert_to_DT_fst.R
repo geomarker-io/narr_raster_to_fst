@@ -65,7 +65,7 @@ rm(d_pres)
 
 # save it
 fst::write_fst(d, "narr.fst", compress = 100)
-system("aws s3 cp narr.fst s3://geomarker/narr.fst")
+system("aws s3 cp narr.fst s3://geomarker/narr/narr.fst")
 
 # data check:
 
