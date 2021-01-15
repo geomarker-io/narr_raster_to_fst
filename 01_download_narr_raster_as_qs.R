@@ -36,7 +36,7 @@ save_NARR_values <- function(data.name, year) {
 ## save_NARR_values('hpbl', '2000')
 
 nms <- c("hpbl", "vis", "rhum.2m", "prate", "air.2m", "pres.sfc", "uwnd.10m", "vwnd.10m")
-yrs <- as.character(2000:2019)
+yrs <- as.character(2000:2020)
 
 ## save all years of each weather variable on disk
 walk2(

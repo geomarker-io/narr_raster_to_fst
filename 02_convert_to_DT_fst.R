@@ -6,7 +6,7 @@ nms <- c("hpbl", "vis", "rhum.2m", "prate", "air.2m", "pres.sfc", "uwnd.10m", "v
 
 read_and_convert <- function(nm) {
   purrr::map(
-    as.character(2000:2019),
+    as.character(2000:2020),
     ~ qs::qread(glue::glue("./narr/narr_{nm}_{.}.qs"), nthreads = parallel::detectCores())
   ) %>%
     dplyr::bind_rows() %>%
@@ -16,7 +16,7 @@ read_and_convert <- function(nm) {
 # create data.table for needed dates and grid combos
 
 narr_cells <- 1:96673
-dates <- seq.Date(as.Date("2000-01-01"), as.Date("2019-12-31"), 1)
+dates <- seq.Date(as.Date("2000-01-01"), as.Date("2020-12-31"), 1)
 
 d <-
   tibble::tibble(
@@ -65,6 +65,7 @@ rm(d_pres)
 
 # save it
 fst::write_fst(d, "narr.fst", compress = 100)
+system("aws s3 cp narr.fst s3://geomarker/narr.fst")
 
 # data check:
 
