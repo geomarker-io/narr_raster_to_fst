@@ -2,7 +2,7 @@
 
 - [NARR](https://www.esrl.noaa.gov/psd/data/gridded/data.narr.html) data details
 - update on 1/15/21: `narr.fst` now includes NARR data from 2000 through 2020
-- update on 4/1/2021: distribute data in smaller chunks
+- update on 4/1/21: distribute data in smaller chunks
 
 ## computing environment
 
@@ -12,12 +12,12 @@ In addition to the package dependencies documented in `renv`, this repo relies o
 
 - `01_narr_to_fst.R` downloads, extracts, and converts all NARR data to `.qs` files
     - each file is saved in the `./narr_qs` directory and named according to variable and year
-- `02_convert_to_DT_fst.R` merges `.qs` files and saves them into chunked files for each variable
+- `02_convert_to_DT_fst.R` merges `.qs` files and saves them into chunked files for each variable in the `./narr_chunk_fst` directory
 - `03_create_empty_raster.R` downloads raster file to get info to use to create "empty raster" for lookup purposes
 
 ## fst files structure
 
-- The absolute s3 location of a NARR data chunk file is:
+The absolute s3 location of a NARR data chunk file is:
 
 ```
 s3://geomarker/narr/narr_chunk_fst/narr_chunk_{number}_{variable}.fst
@@ -34,8 +34,9 @@ narr_cell <- 56772
 narr_chunk <- narr_cell %/% 10000
 narr_product <- "air.2m"
 
-s3::s3_get(glue::glue("s3://geomarker/narr/narr_chunk_{narr_chunk}_{narr_product}.fst")) %>%
-fst::read_fst(as.data.table = TRUE)
+glue::glue("s3://geomarker/narr/narr_chunk_{narr_chunk}_{narr_product}.fst") %>%
+  s3::s3_get() %>%
+  fst::read_fst(as.data.table = TRUE)
 ```
 
 This file could then be data.table merged onto an existing data.table with `narr_cell` and `date`. 
