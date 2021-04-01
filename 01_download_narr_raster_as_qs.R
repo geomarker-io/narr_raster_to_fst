@@ -29,8 +29,8 @@ save_NARR_values <- function(data.name, year) {
     pivot_longer(cols = -narr_cell, names_to = "date", values_to = data.name) %>%
     mutate(date = as.Date(date, format = "X%Y.%m.%d."))
 
-  dir.create("narr", showWarnings = FALSE)
-  qs::qsave(d_narr_tbl_long, glue::glue("./narr/narr_{data.name}_{year}.qs"), nthreads = parallel::detectCores())
+  dir.create("narr_qs", showWarnings = FALSE)
+  qs::qsave(d_narr_tbl_long, glue::glue("./narr_qs/narr_{data.name}_{year}.qs"), nthreads = 4)
 }
 
 ## save_NARR_values('hpbl', '2000')
